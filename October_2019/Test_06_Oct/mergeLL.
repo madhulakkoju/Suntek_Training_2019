@@ -1,0 +1,136 @@
+	//Input
+	//Linked List 1: one->three->five->seven
+	//Head of Linked List 1 is head1 
+	//
+	//Linked List 2: two->four->six
+	//Head of Linked List 2 is head2
+	//
+	//Output
+	//Linked List 3: one->two->three->four->five->six->seven
+	//Head of Linked List 3 is head1
+
+
+#include <stdio.h>
+#include<stdlib.h>
+int length=0;
+struct node
+{
+  int val;
+  struct node *next;
+};
+struct node *head1;
+struct node *head2;
+struct node *temp;
+struct node* create_end( struct node* h)
+{
+  int value;
+  scanf("%d",&value);
+  temp = (struct node*)malloc(sizeof(struct node));
+  if(temp==NULL)
+  {
+    printf("No Memory present");
+    return;
+  }
+  else
+  {
+    if(h != NULL)
+    {
+      struct node *t = malloc(sizeof(struct node));
+      t = h;
+      while(t->next != NULL)
+      {
+        t= t-> next;
+      }
+      t->next = temp;
+      temp->next = NULL;
+      temp->val = value;
+    }
+    else
+    {
+      h = (struct node*)malloc(sizeof(struct node));
+        h->val = value;
+        h->next = NULL;
+    }
+  }
+  return h;
+}
+void display(struct node* head)
+{
+    if(head != NULL)
+    {
+      struct node *t = malloc(sizeof(struct node));
+      t = head;
+      while(t->next != NULL)
+      {
+        printf(" %d  --> ",t->val);
+        t= t-> next;
+      }
+      printf("%d  --> ",t->val);
+    }
+    else
+    {
+      printf("   EMPTY   LIST");
+    }
+}
+struct node* merge(struct node* h1, struct node* h2)
+{   
+    struct node* t = h1,*t1 = h1->next,*q = h2,*q1 = h2->next;
+    while(t1!= NULL || q1!=NULL)
+    {
+        t->next = q;
+        t =t1;
+        t1 =t1->next;
+        if(t1== NULL || q1==NULL) break;
+        q->next = t;
+        q=q1;
+        q1=q1->next;
+    }
+    if(t1==NULL)
+    {
+        q->next = t;
+        t->next =q1;
+    }
+    else
+    {
+        q->next = t;
+    }
+    return h1;
+}
+void main() {
+  int k1,k2;
+  scanf("%d%d",&k1,&k2);
+  length =0;
+  while(length < k1)
+  {
+      length++;
+       head1 = create_end(head1);
+  }
+  length =0;
+  while(length<k2)
+  {
+      length ++;
+      head2 = create_end(head2);
+  }
+  display(head2);
+  struct node* m = merge(head1,head2);
+  display(m);
+}
+
+
+
+/*
+INPUT 1
+7 5
+1 2 3 4 5 6 7
+8 9 10 11 12
+OUTPUT
+ 1  -->  8  -->  2  -->  9  -->  3  -->  10  -->  4  -->  11  -->  5  -->  12  -->  6  --> 7  --> 
+ 
+ INPUT 2
+ 7 9
+1 2 3 4 5 6 7
+8 9 10 11 12 13 14 15 16
+OUTPUT 2
+ 1  -->  8  -->  2  -->  9  -->  3  -->  10  -->  4  -->  11  -->  5  -->  12  -->  6  -->  13  -->  7  -->  14  -->  15  --> 16  --> 
+
+*/
