@@ -20,8 +20,8 @@ int jsonParse(char** input1)
 /*
 INPUT / OUTPUT
 
-{[[()]]}
+input1 ::  {[[()]]}
 
-4
+output >> 4
 
 */
