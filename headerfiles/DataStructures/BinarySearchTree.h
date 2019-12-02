@@ -2,7 +2,8 @@
 Madhu 
 17241A05F3
 
-BINARY SEARCH TREE
+BINARY SEARCH TREE IMPLEMENTATION USING 
+==> ITERATIONS 
 
 OPERATION                           FUNCTION
 -----------------------------------------------------------------------------------------------------------
@@ -80,7 +81,7 @@ void preorder_BinarySearchTree(bstree* b)
 {
   printf(" PRE-ORDER TRAVERSAL OF BST  : ");
     preorder(b->root);
-}
+} 
 
 // POST ORDER TRAVERSAL FOR A TREENODE* 
 void postorder(treenode* x)
@@ -312,3 +313,91 @@ void search_bstree(bstree* b, int val)
     }
     return;
 }
+
+typedef struct qnode
+{
+  treenode* t;
+  struct qnode *next;
+  struct qnode *prev;
+}qnode;
+
+typedef struct queue
+{
+  qnode *enq,*deq;
+} queue;
+
+queue* create_q()
+{
+  queue * q = (queue*) malloc(sizeof (queue));
+  q->enq= NULL;
+  q->deq=NULL;
+  return q;
+}
+
+void enqQ(queue* q, treenode* t)
+{
+  qnode *x = (qnode*)malloc(sizeof(qnode));
+  x->t = t;
+  if(q->enq == NULL)
+  {
+    x->prev= NULL;
+    x->next = NULL;
+    q->enq = x;
+    q->deq= x;
+    return;
+  }
+  x->prev = q->enq;
+  x->next =NULL;
+  q->enq->next = x;
+  q->enq = q->enq->next;
+  return;
+}
+
+treenode* deqQ(queue* q)
+{
+  if(q->deq == NULL)
+  return NULL;
+  treenode* t ;
+  t = q->deq->t;
+
+  if(q->deq->next != NULL)
+  {
+  q->deq = q->deq->next;
+  q->deq->prev = NULL;
+  }
+  else
+  {
+    q->deq = NULL;
+  }
+  return t;
+}
+
+void levelorder_BinarySearchTree(bstree* b)
+{
+  printf("LEVEL-ORDER TRAVERSAL OF BST : ");
+  queue* q = create_q();
+  enqQ(q,b->root);
+  treenode* nod;
+  treenode* xx;
+  int g;
+  while(1)
+  {
+    if(q->deq == NULL)
+    return;
+    nod = q->deq->t;
+    if(nod->left != NULL)
+    {
+      enqQ(q,nod->left);
+    }
+    if(nod->right != NULL)
+    {
+      enqQ(q,nod->right);
+    }
+    if((xx = deqQ(q))!=NULL)
+    printf(" %d ",xx->val);
+  }
+}
+
+
+
+
